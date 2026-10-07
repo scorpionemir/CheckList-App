@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "سامانه مدیریت چک لیست اداره گاز",
+    "slug": "checkList-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/images/gas-logo.png",
+    "userInterfaceStyle": "light",
+
+    "splash": {
+      "image": "./assets/images/gas-logo.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#FFFFFF"
+    },
+
+    "ios": {
+      "supportsTablet": true
+    },
+
+    "android": {
+      "package": "com.amirreza.checklistapp",
+      "usesCleartextTraffic": true
+    },
+
+    "web": {
+      "favicon": "./assets/images/favicon.png"
+    },
+
+    "plugins": [
+      "expo-secure-store",
+      "@react-native-community/datetimepicker",
+      "expo-sqlite",
+      "@maplibre/maplibre-react-native",
+      "expo-font"
+    ],
+
+    "extra": {
+      "eas": {
+        "projectId": "469c19b8-8024-46b3-9294-dc230c16cf74"
+      }
+    }
+  }
+}
