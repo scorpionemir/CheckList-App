@@ -18,7 +18,7 @@
       "distribution": "internal",
       "environment": "preview",
       "env": {
-        "EXPO_PUBLIC_API_URL": "http://192.168.43.136:3000/api"
+        "EXPO_PUBLIC_API_URL": "https://checklist-api-m55q.onrender.com/api"
       },
       "android": {
         "buildType": "apk"
