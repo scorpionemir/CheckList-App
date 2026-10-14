@@ -5,35 +5,37 @@ const {
     getChecklistOptionById,
     createChecklistOption,
     updateChecklistOption,
-    deactivateChecklistOption
+    deactivateChecklistOption,
 } = require("../controllers/checklistOptionsController");
 
-const authenticateToken = require("../middleware/authMiddleware");
+const authMiddleware = require("../middleware/authMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
+// Read checklist options
+router.get("/", authMiddleware, getChecklistOptions);
+router.get("/:id", authMiddleware, getChecklistOptionById);
 
-// Get checklist options
-router.get("/", authenticateToken, getChecklistOptions);
-
-
-// Get one option
-router.get("/:id", authenticateToken, getChecklistOptionById);
-
-
-// Create option
+// Only Manager and Admin can manage options
 router.post(
     "/",
-    authenticateToken,
+    authMiddleware,
+    roleMiddleware("manager", "admin"),
     createChecklistOption
 );
 
-// Update option
-router.put("/:id", authenticateToken, updateChecklistOption);
+router.put(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("manager", "admin"),
+    updateChecklistOption
+);
 
 router.patch(
     "/:id/deactivate",
-    authenticateToken,
+    authMiddleware,
+    roleMiddleware("manager", "admin"),
     deactivateChecklistOption
 );
 

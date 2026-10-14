@@ -17,7 +17,7 @@ const API_URL =
 
 // const API_URL = "http://192.168.43.136:3000/api";
 
-console.log("🔥 API URL:", API_URL);
+console.log("🔥🔥🔥 API URL FROM BUILD:", API_URL);
 
 if (!API_URL) {
     console.warn(
@@ -295,17 +295,16 @@ export const loginUser = async (
     username,
     password
 ) => {
-
     return apiRequest(
         "/auth/login",
         {
             method: "POST",
 
-            body:
-                JSON.stringify({
-                    username,
-                    password,
-                }),
+            body: JSON.stringify({
+                username: username.trim(),
+                password,
+                clientType: "mobile",
+            }),
         }
     );
 };

@@ -4,8 +4,9 @@ import {
     createNativeStackNavigator,
 } from "@react-navigation/native-stack";
 
-import LoginScreen from "../screens/LoginScreen";
+import { useAuth } from "../context/AuthContext";
 
+import LoginScreen from "../screens/LoginScreen";
 import TabNavigation from "./TabNavigation";
 
 import Checklist1ArchiveScreen from "../screens/Checklist1Archive";
@@ -13,20 +14,20 @@ import Checklist2ArchiveScreen from "../screens/Checklist2Archive";
 import DraftArchiveScreen from "../screens/DraftArchive";
 import ChecklistDetail from "../screens/ChecklistDetail";
 
-import { useAuth } from "../context/AuthContext";
-
-import ManagerChecklistArchive from "../screens/ManagerChecklistArchive";
-
-const Stack =
-    createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const StackNavigation = () => {
-    const { isAuthenticated } =
-        useAuth();
+    const { isAuthenticated, user } = useAuth();
+
+    // Only contractors can use the mobile application.
+    const canUseMobileApp =
+        isAuthenticated &&
+        user?.role === "contractor" &&
+        user?.isActive !== false;
 
     return (
         <Stack.Navigator>
-            {!isAuthenticated ? (
+            {!canUseMobileApp ? (
                 <Stack.Screen
                     name="Login"
                     component={LoginScreen}
@@ -46,101 +47,67 @@ const StackNavigation = () => {
 
                     <Stack.Screen
                         name="Checklist1Archive"
-                        component={
-                            Checklist1ArchiveScreen
-                        }
+                        component={Checklist1ArchiveScreen}
                         options={{
-                            title:
-                                "آرشیو چک لیست ۱",
+                            title: "آرشیو چک لیست ۱",
                             headerStyle: {
-                                backgroundColor:
-                                    "#c5882d",
+                                backgroundColor: "#c5882d",
                             },
                             headerTitleStyle: {
                                 color: "#FFFFFF",
-                                fontWeight:
-                                    "bold",
+                                fontWeight: "bold",
                             },
-                            headerTitleAlign:
-                                "center",
+                            headerTitleAlign: "center",
                         }}
                     />
 
                     <Stack.Screen
                         name="Checklist2Archive"
-                        component={
-                            Checklist2ArchiveScreen
-                        }
+                        component={Checklist2ArchiveScreen}
                         options={{
-                            title:
-                                "آرشیو چک لیست ۲",
+                            title: "آرشیو چک لیست ۲",
                             headerStyle: {
-                                backgroundColor:
-                                    "#c5882d",
+                                backgroundColor: "#c5882d",
                             },
                             headerTitleStyle: {
                                 color: "#FFFFFF",
-                                fontWeight:
-                                    "bold",
+                                fontWeight: "bold",
                             },
-                            headerTitleAlign:
-                                "center",
+                            headerTitleAlign: "center",
                         }}
                     />
 
                     <Stack.Screen
                         name="DraftArchive"
-                        component={
-                            DraftArchiveScreen
-                        }
+                        component={DraftArchiveScreen}
                         options={{
-                            title:
-                                "پیش نویس‌ها",
+                            title: "پیش‌نویس‌ها",
                             headerStyle: {
-                                backgroundColor:
-                                    "#c5882d",
+                                backgroundColor: "#c5882d",
                             },
                             headerTitleStyle: {
                                 color: "#FFFFFF",
-                                fontWeight:
-                                    "bold",
+                                fontWeight: "bold",
                             },
-                            headerTitleAlign:
-                                "center",
+                            headerTitleAlign: "center",
                         }}
                     />
 
                     <Stack.Screen
                         name="ChecklistDetail"
-                        component={
-                            ChecklistDetail
-                        }
+                        component={ChecklistDetail}
                         options={{
-                            title:
-                                "جزئیات چک لیست",
+                            title: "جزئیات چک لیست",
                             headerStyle: {
-                                backgroundColor:
-                                    "#c5882d",
+                                backgroundColor: "#c5882d",
                             },
                             headerTitleStyle: {
                                 color: "#FFFFFF",
-                                fontWeight:
-                                    "bold",
+                                fontWeight: "bold",
                             },
-                            headerTitleAlign:
-                                "center",
+                            headerTitleAlign: "center",
                         }}
                     />
-                    {/* <Stack.Screen
-                        name="ManagerChecklistArchive"
-                        component={
-                            ManagerChecklistArchive
-                        }
-                        options={{
-                            title:
-                                "مدیریت چک‌لیست‌ها",
-                        }}
-                    /> */}
                 </>
             )}
         </Stack.Navigator>

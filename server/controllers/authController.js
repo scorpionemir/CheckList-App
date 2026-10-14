@@ -1,14 +1,32 @@
+
 const pool = require("../db/database");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const login = async (req, res) => {
     try {
-        const { username, password } = req.body;
+        const { username, password, clientType } = req.body || {};
 
-        if (!username || !password) {
+        if (
+            typeof username !== "string" ||
+            !username.trim() ||
+            typeof password !== "string" ||
+            !password ||
+            !["mobile", "web"].includes(clientType)
+        ) {
             return res.status(400).json({
-                message: "Username and password are required",
+                message:
+                    "Username, password, and a valid client type are required",
+            });
+        }
+
+        const jwtSecret = process.env.JWT_SECRET;
+
+        if (!jwtSecret) {
+            console.error("JWT_SECRET is not configured");
+
+            return res.status(500).json({
+                message: "Server authentication configuration error",
             });
         }
 
@@ -24,8 +42,9 @@ const login = async (req, res) => {
                 role
             FROM users
             WHERE username = $1
+            LIMIT 1
             `,
-            [username]
+            [username.trim()]
         );
 
         if (result.rows.length === 0) {
@@ -35,12 +54,6 @@ const login = async (req, res) => {
         }
 
         const user = result.rows[0];
-
-        if (!user.is_active) {
-            return res.status(403).json({
-                message: "User account is inactive",
-            });
-        }
 
         const passwordValid = await bcrypt.compare(
             password,
@@ -53,19 +66,35 @@ const login = async (req, res) => {
             });
         }
 
+        if (!user.is_active) {
+            return res.status(403).json({
+                message: "User account is inactive",
+            });
+        }
+
+        const allowedRoles =
+            clientType === "web"
+                ? ["manager", "admin"]
+                : ["contractor"];
+
+        if (!allowedRoles.includes(user.role)) {
+            return res.status(403).json({
+                message:
+                    "This account is not permitted to sign in to this application",
+            });
+        }
+
         const token = jwt.sign(
             {
                 userId: user.id,
-                username: user.username,
-                role: user.role,
             },
-            process.env.JWT_SECRET,
+            jwtSecret,
             {
                 expiresIn: "7d",
             }
         );
 
-        res.json({
+        return res.status(200).json({
             message: "Login successful",
             token,
             user: {
@@ -79,7 +108,7 @@ const login = async (req, res) => {
     } catch (error) {
         console.error("Login error:", error);
 
-        res.status(500).json({
+        return res.status(500).json({
             message: "Login failed",
         });
     }

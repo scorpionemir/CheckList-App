@@ -4,28 +4,31 @@ const {
     getChecklistTypes,
     getChecklistTypeById,
     createChecklistType,
-    updateChecklistType
+    updateChecklistType,
 } = require("../controllers/checklistTypesController");
 
-const authenticateToken = require("../middleware/authMiddleware");
+const authMiddleware = require("../middleware/authMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
 const router = express.Router();
 
+// Read checklist types
+router.get("/", authMiddleware, getChecklistTypes);
+router.get("/:id", authMiddleware, getChecklistTypeById);
 
-// Get all checklist types
-router.get("/", authenticateToken, getChecklistTypes);
+// Only Manager and Admin can create or update checklist types
+router.post(
+    "/",
+    authMiddleware,
+    roleMiddleware("manager", "admin"),
+    createChecklistType
+);
 
-
-// Get one checklist type
-router.get("/:id", authenticateToken, getChecklistTypeById);
-
-
-// Create checklist type
-router.post("/", authenticateToken, createChecklistType);
-
-
-// Update checklist type
-router.put("/:id", authenticateToken, updateChecklistType);
-
+router.put(
+    "/:id",
+    authMiddleware,
+    roleMiddleware("manager", "admin"),
+    updateChecklistType
+);
 
 module.exports = router;

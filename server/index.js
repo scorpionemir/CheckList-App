@@ -7,6 +7,7 @@ const authenticateToken = require("./middleware/authMiddleware");
 const checklistTypesRouter = require("./routes/checklistTypes");
 const checklistOptionsRouter = require("./routes/checklistOptions");
 const checklistsRouter = require("./routes/checklists");
+const auditLogsRouter = require("./routes/auditLogs");
 
 const app = express();
 
@@ -21,6 +22,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/checklist-types", checklistTypesRouter);
 app.use("/api/checklist-options", checklistOptionsRouter);
 app.use("/api/checklists", checklistsRouter);
+app.use("/api/audit-logs", auditLogsRouter);
 
 app.get("/", (req, res) => {
     res.json({

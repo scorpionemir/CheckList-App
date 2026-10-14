@@ -1,20 +1,3 @@
-// const express = require("express");
-
-// const {
-//     login
-// } = require("../controllers/authController");
-
-// const loginRateLimiter = require("../middleware/loginRateLimiter");
-
-// const router = express.Router();
-
-// router.post(
-//     "/login",
-//     loginRateLimiter,
-//     login
-// );
-
-// module.exports = router;
 
 const express = require("express");
 
@@ -22,11 +5,11 @@ const {
     login,
 } = require("../controllers/authController");
 
+const pool = require("../db/database");
 const authMiddleware = require("../middleware/authMiddleware");
 const loginRateLimiter = require("../middleware/loginRateLimiter");
 
 const router = express.Router();
-
 
 // Login
 router.post(
@@ -35,15 +18,12 @@ router.post(
     login
 );
 
-
 // Current authenticated user
 router.get(
     "/me",
     authMiddleware,
     async (req, res) => {
         try {
-            const pool = require("../db/database");
-
             const result = await pool.query(
                 `
                 SELECT
@@ -79,10 +59,7 @@ router.get(
                 },
             });
         } catch (error) {
-            console.error(
-                "Get current user error:",
-                error
-            );
+            console.error("Get current user error:", error);
 
             return res.status(500).json({
                 message: "Failed to get current user",
@@ -90,6 +67,5 @@ router.get(
         }
     }
 );
-
 
 module.exports = router;
