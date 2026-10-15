@@ -1,12 +1,11 @@
 import React from "react";
+import { Image } from "react-native";
 
 import { createNativeBottomTabNavigator } from "@react-navigation/bottom-tabs/unstable";
 
 import AntennaScreen from "../screens/AntennaScreen";
 import WirelessScreen from "../screens/WirelessScreen";
 import ArchiveScreen from "../screens/ArchiveScreen";
-
-import { Ionicons } from "@expo/vector-icons";
 
 const Tab = createNativeBottomTabNavigator();
 
@@ -37,29 +36,26 @@ const TabNavigation = () => {
                 },
             }}
         >
-
-            {/* ==================== آنتن ==================== */}
-
             <Tab.Screen
                 name="Antenna"
                 component={AntennaScreen}
                 options={{
-                    headerTitle:
-                        "چک لیست دکل و آنتن و سیستم ارتینگ",
-
+                    headerTitle: "چک لیست دکل و آنتن و سیستم ارتینگ",
                     tabBarLabel: "آنتن",
 
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons
-                            name="cellular"
-                            size={size}
-                            color={color}
+                    tabBarIcon: ({ color }) => (
+                        <Image
+                            source={require("../assets/images/icons8-antenna-ios-27-filled-32.png")}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                resizeMode: "contain",
+                                tintColor: color,
+                            }}
                         />
                     ),
                 }}
             />
-
-            {/* ==================== بی سیم ==================== */}
 
             <Tab.Screen
                 name="Wireless"
@@ -67,39 +63,42 @@ const TabNavigation = () => {
                 options={{
                     headerTitle:
                         "چک لیست بی سیم ها اعم از تکرارکننده، ثابت، خودرویی، دستی",
-
                     tabBarLabel: "بی‌سیم",
 
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons
-                            name="wifi"
-                            size={size}
-                            color={color}
+                    tabBarIcon: ({ color }) => (
+                        <Image
+                            source={require("../assets/images/icons8-wireless-others-32.png")}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                resizeMode: "contain",
+                                tintColor: color,
+                            }}
                         />
                     ),
                 }}
             />
-
-            {/* ==================== آرشیو ==================== */}
 
             <Tab.Screen
                 name="Archive"
                 component={ArchiveScreen}
                 options={{
                     headerTitle: "آرشیو چک لیست ها",
-
                     tabBarLabel: "آرشیو",
 
-                    tabBarIcon: ({ color, size }) => (
-                        <Ionicons
-                            name="archive"
-                            size={size}
-                            color={color}
+                    tabBarIcon: ({ color }) => (
+                        <Image
+                            source={require("../assets/images/icons8-archive-windows-11-filled-32.png")}
+                            style={{
+                                width: 24,
+                                height: 24,
+                                resizeMode: "contain",
+                                tintColor: color,
+                            }}
                         />
                     ),
                 }}
             />
-
         </Tab.Navigator>
     );
 };
