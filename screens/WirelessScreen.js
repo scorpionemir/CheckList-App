@@ -772,11 +772,7 @@ setErrors({});
 
         <KeyboardAvoidingView
         style={{ flex: 1 }}
-        behavior={
-            Platform.OS === "ios"
-                ? "padding"
-                : "height"
-        }
+        behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
 
         <ScrollView
@@ -785,9 +781,7 @@ setErrors({});
                 styles.scrollView
             }
 
-            contentContainerStyle={
-                styles.container
-            }
+            contentContainerStyle={[styles.container, { flexGrow: 1 }]}
 
             keyboardShouldPersistTaps="handled"
 
@@ -950,7 +944,7 @@ const styles = StyleSheet.create({
 
         padding: 16,
 
-        paddingBottom: 120,
+        paddingBottom: 160,
 
     },
 

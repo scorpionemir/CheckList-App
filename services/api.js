@@ -9,24 +9,17 @@ import {
     isOnline,
 } from "./network";
 
-// const API_URL =
-//     "http://10.0.2.2:3000/api";
+// const API_URL = "http://10.0.2.2:3000/api";
 
-const API_URL =
-    process.env.EXPO_PUBLIC_API_URL;
+const API_URL = process.env.EXPO_PUBLIC_API_URL;
 
 // const API_URL = "http://192.168.43.136:3000/api";
 
-console.log("🔥🔥🔥 API URL FROM BUILD:", API_URL);
-
 if (!API_URL) {
-    console.warn(
-        "EXPO_PUBLIC_API_URL is not configured."
-    );
+    console.warn("EXPO_PUBLIC_API_URL is not configured.");
 }
 
-const REQUEST_TIMEOUT =
-    15000;
+const REQUEST_TIMEOUT = 60000;
 
 
 /*
@@ -127,13 +120,6 @@ const apiRequest = async (
         );
 
     try {
-
-        console.log("========== API REQUEST ==========");
-console.log("URL:", `${API_URL}${endpoint}`);
-console.log("METHOD:", options.method || "GET");
-console.log("BODY:", options.body);
-console.log("TOKEN:", token ? "YES" : "NO");
-console.log("=================================");
 
         const response =
             await fetch(
@@ -291,22 +277,34 @@ const isTemporaryApiError = (
 |--------------------------------------------------------------------------
 */
 
-export const loginUser = async (
-    username,
-    password
-) => {
-    return apiRequest(
-        "/auth/login",
-        {
-            method: "POST",
+export const loginUser = async (username, password) => {
+    const options = {
+        method: "POST",
+        body: JSON.stringify({
+            username: username.trim(),
+            password,
+            clientType: "mobile",
+        }),
+    };
 
-            body: JSON.stringify({
-                username: username.trim(),
-                password,
-                clientType: "mobile",
-            }),
+    try {
+        return await apiRequest("/auth/login", options);
+    } catch (error) {
+        const retryable =
+            error?.code === "TIMEOUT" ||
+            error?.code === "NETWORK_ERROR" ||
+            [502, 503, 504].includes(error?.status);
+
+        if (!retryable) {
+            throw error;
         }
-    );
+
+        await new Promise((resolve) => {
+            setTimeout(resolve, 1500);
+        });
+
+        return apiRequest("/auth/login", options);
+    }
 };
 
 
