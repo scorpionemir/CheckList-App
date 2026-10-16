@@ -748,10 +748,17 @@ setErrors({});
                 /*
                     حالت ثبت عادی
                 */
-                response =
-                    await createChecklist(
-                        payload
-                    );
+                if (!user?.id) {
+    Alert.alert(
+        "خطا",
+        "شناسه کاربر برای ثبت چک‌لیست پیدا نشد. لطفاً دوباره وارد حساب شوید."
+    );
+    return;
+}
+
+response = await createChecklist(payload, {
+    userId: user.id,
+});
 
                 /*
                     اگر چک‌لیست از Draft آمده،
@@ -870,9 +877,13 @@ setErrors({});
                     });
 
 
-                setCurrentDraftId(
-                    draft.id
-                );
+                // پیش‌نویس ابتدا با موفقیت در دیتابیس محلی ذخیره شده است.
+
+// فرم را برای ثبت اطلاعات جدید خالی می‌کنیم.
+setChecklistData(INITIAL_CHECKLIST_DATA);
+setCurrentDraftId(null);
+setEditingChecklistId(null);
+setErrors({});
 
                 Alert.alert(
                     "ذخیره موفق",
