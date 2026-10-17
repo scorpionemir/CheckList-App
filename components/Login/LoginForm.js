@@ -1,6 +1,8 @@
+
 import React from "react";
 
 import {
+    ActivityIndicator,
     Alert,
     Pressable,
     StyleSheet,
@@ -59,6 +61,8 @@ const LoginForm = () => {
         onSubmit: handleLogin,
     });
 
+    const isLoading = formik.isSubmitting;
+
     return (
         <View style={styles.wrapper}>
             <View style={styles.formInput}>
@@ -71,6 +75,7 @@ const LoginForm = () => {
                     onBlur={formik.handleBlur("username")}
                     textContentType="username"
                     autoFocus
+                    editable={!isLoading}
                 />
 
                 {formik.touched.username &&
@@ -92,6 +97,7 @@ const LoginForm = () => {
                     onBlur={formik.handleBlur("password")}
                     textContentType="password"
                     autoCorrect={false}
+                    editable={!isLoading}
                 />
 
                 {formik.touched.password &&
@@ -104,12 +110,35 @@ const LoginForm = () => {
 
             <View>
                 <Pressable
-                    style={styles.button}
+                    style={({ pressed }) => [
+                        styles.button,
+                        pressed && !isLoading && styles.buttonPressed,
+                        isLoading && styles.buttonLoading,
+                    ]}
                     onPress={formik.handleSubmit}
+                    disabled={isLoading}
+                    accessibilityRole="button"
+                    accessibilityLabel="ورود"
+                    accessibilityState={{
+                        disabled: isLoading,
+                        busy: isLoading,
+                    }}
                 >
-                    <Text style={styles.buttonText}>
-                        ورود
-                    </Text>
+                    {isLoading ? (
+                        <View style={styles.loadingContent}>
+                            <ActivityIndicator
+                                size="small"
+                                color="#FFFFFF"
+                            />
+                            <Text style={styles.buttonText}>
+                                در حال ورود...
+                            </Text>
+                        </View>
+                    ) : (
+                        <Text style={styles.buttonText}>
+                            ورود
+                        </Text>
+                    )}
                 </Pressable>
             </View>
         </View>
@@ -124,13 +153,13 @@ const styles = StyleSheet.create({
     },
 
     formInput: {
-        borderBlockColor: "#2c2a2a",
+        borderColor: "#2c2a2a",
         borderWidth: 1,
         borderRadius: 5,
         paddingHorizontal: 10,
         paddingVertical: 12,
         marginBottom: 10,
-        backgroundColor: "#fAfAfA",
+        backgroundColor: "#FAFAFA",
         padding: 20,
         marginTop: 10,
     },
@@ -138,11 +167,32 @@ const styles = StyleSheet.create({
     button: {
         borderRadius: 5,
         borderWidth: 1,
+        borderColor: "#19718C",
         backgroundColor: "#218DAE",
         justifyContent: "center",
         alignItems: "center",
         marginTop: 30,
-        padding: 10,
+        padding: 12,
+        minHeight: 52,
+    },
+
+    buttonPressed: {
+        backgroundColor: "#176780",
+        borderColor: "#12566B",
+        transform: [{ scale: 0.98 }],
+    },
+
+    buttonLoading: {
+        backgroundColor: "#176780",
+        borderColor: "#12566B",
+        opacity: 0.9,
+    },
+
+    loadingContent: {
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        gap: 10,
     },
 
     buttonText: {

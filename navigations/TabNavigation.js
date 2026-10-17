@@ -1,3 +1,4 @@
+
 import React from "react";
 import { Image } from "react-native";
 
@@ -27,17 +28,27 @@ const TabNavigation = () => {
 
                 headerTitleAlign: "center",
 
+                tabBarShowLabel: true,
+                tabBarHideOnKeyboard: true,
+
                 tabBarActiveTintColor: "#c5882d",
                 tabBarInactiveTintColor: "gray",
 
                 tabBarStyle: {
                     backgroundColor: "#fff",
-                    height: 60,
+                    height: 72,
+                    paddingTop: 6,
+                    paddingBottom: 6,
                 },
 
                 tabBarLabelStyle: {
                     fontSize: 12,
                     fontWeight: "bold",
+                    marginTop: 2,
+                },
+
+                tabBarIconStyle: {
+                    marginTop: 0,
                 },
             }}
         >
@@ -48,13 +59,14 @@ const TabNavigation = () => {
                     headerTitle: "چک لیست دکل و آنتن و سیستم ارتینگ",
                     tabBarLabel: "آنتن",
 
-                    tabBarIcon: () => (
+                    tabBarIcon: ({ focused }) => (
                         <Image
                             source={require("../assets/images/icons8-antenna-ios-27-filled-32.png")}
                             style={{
                                 width: 26,
                                 height: 26,
                                 resizeMode: "contain",
+                                opacity: focused ? 1 : 0.65,
                             }}
                         />
                     ),
@@ -69,13 +81,14 @@ const TabNavigation = () => {
                         "چک لیست بی سیم ها اعم از تکرارکننده، ثابت، خودرویی، دستی",
                     tabBarLabel: "بی‌سیم",
 
-                    tabBarIcon: () => (
+                    tabBarIcon: ({ focused }) => (
                         <Image
                             source={require("../assets/images/icons8-wireless-others-32.png")}
                             style={{
                                 width: 26,
                                 height: 26,
                                 resizeMode: "contain",
+                                opacity: focused ? 1 : 0.65,
                             }}
                         />
                     ),
@@ -89,13 +102,14 @@ const TabNavigation = () => {
                     headerTitle: "آرشیو چک لیست ها",
                     tabBarLabel: "آرشیو",
 
-                    tabBarIcon: () => (
+                    tabBarIcon: ({ focused }) => (
                         <Image
                             source={require("../assets/images/icons8-archive-windows-11-filled-32.png")}
                             style={{
                                 width: 26,
                                 height: 26,
                                 resizeMode: "contain",
+                                opacity: focused ? 1 : 0.65,
                             }}
                         />
                     ),
