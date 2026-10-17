@@ -1,13 +1,13 @@
 import React from "react";
 import { Image } from "react-native";
 
-import { createNativeBottomTabNavigator } from "@react-navigation/bottom-tabs/unstable";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import AntennaScreen from "../screens/AntennaScreen";
 import WirelessScreen from "../screens/WirelessScreen";
 import ArchiveScreen from "../screens/ArchiveScreen";
 
-const Tab = createNativeBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 const TabNavigation = () => {
     return (
@@ -32,7 +32,12 @@ const TabNavigation = () => {
 
                 tabBarStyle: {
                     backgroundColor: "#fff",
-                    height: 50,
+                    height: 60,
+                },
+
+                tabBarLabelStyle: {
+                    fontSize: 12,
+                    fontWeight: "bold",
                 },
             }}
         >
@@ -43,14 +48,13 @@ const TabNavigation = () => {
                     headerTitle: "چک لیست دکل و آنتن و سیستم ارتینگ",
                     tabBarLabel: "آنتن",
 
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: () => (
                         <Image
                             source={require("../assets/images/icons8-antenna-ios-27-filled-32.png")}
                             style={{
-                                width: 24,
-                                height: 24,
+                                width: 26,
+                                height: 26,
                                 resizeMode: "contain",
-                                tintColor: color,
                             }}
                         />
                     ),
@@ -65,14 +69,13 @@ const TabNavigation = () => {
                         "چک لیست بی سیم ها اعم از تکرارکننده، ثابت، خودرویی، دستی",
                     tabBarLabel: "بی‌سیم",
 
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: () => (
                         <Image
                             source={require("../assets/images/icons8-wireless-others-32.png")}
                             style={{
-                                width: 24,
-                                height: 24,
+                                width: 26,
+                                height: 26,
                                 resizeMode: "contain",
-                                tintColor: color,
                             }}
                         />
                     ),
@@ -86,14 +89,13 @@ const TabNavigation = () => {
                     headerTitle: "آرشیو چک لیست ها",
                     tabBarLabel: "آرشیو",
 
-                    tabBarIcon: ({ color }) => (
+                    tabBarIcon: () => (
                         <Image
                             source={require("../assets/images/icons8-archive-windows-11-filled-32.png")}
                             style={{
-                                width: 24,
-                                height: 24,
+                                width: 26,
+                                height: 26,
                                 resizeMode: "contain",
-                                tintColor: color,
                             }}
                         />
                     ),
